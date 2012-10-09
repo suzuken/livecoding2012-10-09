@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>top</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" type="text/css" media="screen" charset="utf-8">
+</head>
+<body>
+    <h1>ぶろぐ</h1>
+    <form action="login" method="get" accept-charset="utf-8">
+        username: <input type="text" name="username" value="">
+        password: <input type="password" name="password" value="">
+    <p><input type="submit" value="Continue &rarr;"></p>
+    </form>
+
+    {% for entry in entries %}
+    <div>
+        <div>{{ entry.title }}</div>
+        <div>{{ entry.body }}</div>
+        <div>{{ entry.author }}</div>
+        <div>{{ entry.datetime }}</div>
+    </div>
+    {% endfor %}
+
+</body>
+</html>

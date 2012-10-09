@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-from flask import Flask
+from flask import Flask, render_template, redirect, url_for
 from mongokit import Connection, Document
+import datetime
 
 DEBUG = True
 
@@ -17,22 +18,43 @@ connection = Connection(
         app.config['MONGODB_PORT']
         )
 
-class Post(object):
+class Entry(object):
     structure = {
-        'name': unicode,
-        'email': unicode,
+        'title': unicode,
+        'body': unicode,
+        'author': unicode,
+        'datetime': basestring,
     }
-    validators = {
-        'name': max_length(50),
-        'email': max_length(120)
-    }
-    use_dot_notation = True
-    def __repr__(self):
-        return '<User %r>' % (self.name)
 
 @app.route('/')
 def index():
-    return "hello"
+    # return "hello"
+    collection = connection['test'].entry
+    entries = collection.find()
+    # TODO: retrieve from db
+    # entries = [entry]
+
+    return render_template("top.html", entries=entries)
+
+@app.route('/add_entry')
+def add_example():
+    collection = connection['test'].entry
+    entry = {
+        'title': 1,
+        'body': 2,
+        'author': 3,
+        'datetime': 3
+            }
+    collection.insert(entry)
+    return redirect(url_for("index"))
+
+@app.route('/login')
+def login():
+    pass
+
+@app.route('/show_entries')
+def show_boards():
+    pass
 
 if __name__ == '__main__':
     app.run()
